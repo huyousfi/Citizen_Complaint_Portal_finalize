@@ -9,7 +9,12 @@ const __dirname = path.dirname(__filename)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, '../uploads')
-    cb(null, uploadDir)
+    import('fs').then((fs) => {
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true })
+      }
+      cb(null, uploadDir)
+    }).catch(() => cb(null, uploadDir))
   },
   filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.originalname)}`
