@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Primary color - Civic Blue: trust, authority, government */
+  --civic-blue: #1e4a6e;
+  --civic-blue-deep: #0f3652;
+  --civic-blue-light: #e8f1f8;
+  
+  /* Secondary accent - Warm Terracotta: action, urgency, care */
+  --accent-warm: #c85f45;
+  --accent-warm-deep: #8b3d2b;
+  --accent-warm-light: #f5e6df;
+  
+  /* Neutral palette - Professional grays */
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-tertiary: #7a7a7a;
+  --text-light: #9a9a9a;
+  
+  /* Surface & borders */
+  --surface-white: #fafbfc;
+  --surface-light: #f3f5f7;
+  --surface-bg: #eff1f4;
+  --border-default: #e1e4e8;
+  --border-soft: rgba(30, 74, 110, 0.08);
+  
+  /* Shadows - refined hierarchy */
+  --shadow-xs: 0 2px 4px rgba(30, 74, 110, 0.08);
+  --shadow-sm: 0 4px 12px rgba(30, 74, 110, 0.12);
+  --shadow-md: 0 8px 24px rgba(30, 74, 110, 0.14);
+  --shadow-lg: 0 16px 40px rgba(30, 74, 110, 0.16);
+  --shadow-xl: 0 24px 56px rgba(30, 74, 110, 0.18);
+  
+  /* Typography system */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* Type scale - mobile first */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3.5rem;
+  --text-5xl: 4.5rem;
+  --text-6xl: clamp(3.5rem, 6vw, 5.5rem);
+  
+  /* Line heights */
+  --leading-tight: 1.15;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --leading-loose: 1.85;
+
+  font-family: var(--font-sans);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+  background: var(--surface-bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(200, 95, 69, 0.08), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(30, 74, 110, 0.06), transparent 35%),
+    linear-gradient(180deg, var(--surface-bg) 0%, #f9fafb 100%);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(36, 77, 104, 0.26);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+label,
+strong,
+small,
+span,
+a,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--text-6xl);
+  font-weight: var(--font-weight-extrabold);
+  line-height: var(--leading-tight);
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-snug);
+}
+
+h3 {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-snug);
+}
+
+h4 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-normal);
+}
+
+p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --text-section: 2.1rem;
+    --text-hero: clamp(2.4rem, 9vw, 3.1rem);
+  }
+
+  body {
+    font-size: 15px;
+  }
+}

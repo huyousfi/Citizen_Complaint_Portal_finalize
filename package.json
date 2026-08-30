@@ -1,0 +1,29 @@
+{
+  "name": "citizen-complaint-portal-finalize",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3",
+    "chart.js": "^4.4.1",
+    "react-chartjs-2": "^5.2.0",
+    "socket.io-client": "^4.7.2",
+    "react-map-gl": "^7.1.7",
+    "mapbox-gl": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "oxlint": "^1.79.0",
+    "vite": "^8.2.2"
+  }
+}
