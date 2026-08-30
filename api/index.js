@@ -38,13 +38,13 @@ app.use(async (req, res, next) => {
   }
 })
 
-// Routes
-app.use('/api/auth', authRoutes)
-app.use('/api/complaints', complaintRoutes)
-app.use('/api/ai', aiRoutes)
+// Flexible route mounting (matches with or without /api prefix)
+app.use(['/api/auth', '/auth'], authRoutes)
+app.use(['/api/complaints', '/complaints'], complaintRoutes)
+app.use(['/api/ai', '/ai'], aiRoutes)
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({ status: 'Server is running on Vercel Serverless', timestamp: new Date() })
 })
 
