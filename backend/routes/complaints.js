@@ -34,10 +34,13 @@ router.post('/', requireCitizen, async (req, res) => {
     await complaint.save()
     await complaint.populate('createdBy', 'name email')
 
-    req.app.get('io').emit('new_complaint', {
-      type: 'new_complaint',
-      complaint: addPriorityField(complaint.toObject ? complaint.toObject() : complaint),
-    })
+    const io = req.app.get('io')
+    if (io && typeof io.emit === 'function') {
+      io.emit('new_complaint', {
+        type: 'new_complaint',
+        complaint: addPriorityField(complaint.toObject ? complaint.toObject() : complaint),
+      })
+    }
 
     res.status(201).json({
       message: 'Complaint submitted successfully',
@@ -282,12 +285,15 @@ router.patch('/:id/status', requireOfficer, async (req, res) => {
 
     await complaint.save()
 
-    req.app.get('io').emit('status_updated', {
-      type: 'status_updated',
-      complaintId: complaint._id,
-      status,
-      officerRemark: complaint.officerRemark,
-    })
+    const io = req.app.get('io')
+    if (io && typeof io.emit === 'function') {
+      io.emit('status_updated', {
+        type: 'status_updated',
+        complaintId: complaint._id,
+        status,
+        officerRemark: complaint.officerRemark,
+      })
+    }
 
     const withPriority = addPriorityField(complaint)
     res.json({

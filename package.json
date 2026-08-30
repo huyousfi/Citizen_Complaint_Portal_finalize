@@ -10,14 +10,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.3",
+    "@anthropic-ai/sdk": "^0.122.0",
+    "bcryptjs": "^3.0.3",
     "chart.js": "^4.4.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "json2csv": "^6.0.0-alpha.2",
+    "jsonwebtoken": "^9.0.3",
+    "mapbox-gl": "^3.0.1",
+    "mongoose": "^9.9.4",
+    "multer": "^2.3.0",
+    "react": "^19.2.8",
     "react-chartjs-2": "^5.2.0",
-    "socket.io-client": "^4.7.2",
+    "react-dom": "^19.2.8",
     "react-map-gl": "^7.1.7",
-    "mapbox-gl": "^3.0.1"
+    "react-router-dom": "^7.18.3",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",

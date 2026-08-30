@@ -167,9 +167,9 @@ function App() {
       if (officerSearch) params.append('search', officerSearch)
 
       const query = params.toString() ? `?${params.toString()}` : ''
-      const token = localStorage.getItem('token')
+      const apiUrl = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5001/api' : '/api')
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/complaints/export${query}`,
+        `${apiUrl}/complaints/export${query}`,
         {
           method: 'GET',
           headers: {
