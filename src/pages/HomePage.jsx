@@ -31,16 +31,6 @@ export default function HomePage() {
             <Link to="/complaints" className="secondary-button">View complaints</Link>
           </div>
         </div>
-
-        <div className="hero-showcase" aria-label="Civic engagement illustration">
-          <div className="hero-image-area">
-            <div className="hero-image-content">
-              <div className="image-icon">🏛️</div>
-              <p>Community Voice</p>
-              <span>Your feedback shapes public services</span>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section className="home-strip">
