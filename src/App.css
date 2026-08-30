@@ -353,9 +353,12 @@
   padding: 0.85rem 1.2rem;
   font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}\n\n.ghost-button:hover {\n  background: rgba(30, 74, 110, 0.05);\n  border-color: var(--civic-blue);\n}
+}
+
+.ghost-button:hover {
+  background: rgba(30, 74, 110, 0.05);
+  border-color: var(--civic-blue);
+}
 
 .link-button {
   padding: 0.5rem 0.9rem;
@@ -835,10 +838,6 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--civic-blue);
-}
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-main);
 }
 
 .husain-cta {
@@ -1323,7 +1322,8 @@
 }
 
 .info-section {
-  display: flex;\n  flex-direction: column;
+  display: flex;
+  flex-direction: column;
   gap: 22px;
   padding: 0 4px;
 }
