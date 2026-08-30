@@ -1,4 +1,4 @@
-﻿import express from 'express'
+import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
@@ -20,10 +20,9 @@ app.use(express.urlencoded({ extended: true }))
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return
 
-  const mongoUri = process.env.MONGODB_URI
-  if (!mongoUri) {
-    throw new Error('MONGODB_URI is not defined in environment variables')
-  }
+  const mongoUri =
+    process.env.MONGODB_URI ||
+    'mongodb+srv://huyousfisoft_db_user:YKIiHFGHj0tDEE6r@cluster0.jmvgzzy.mongodb.net/citizen_portal?appName=Cluster0&retryWrites=true&w=majority'
 
   await mongoose.connect(mongoUri)
 }
