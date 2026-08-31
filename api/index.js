@@ -19,7 +19,10 @@ app.use(express.urlencoded({ extended: true }))
 
 // Normalize Vercel rewritten URL
 app.use((req, res, next) => {
-  if (req.query && req.query['0']) {
+  if (req.query && req.query.path) {
+    const p = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path
+    req.url = p.startsWith('/') ? '/api' + p : '/api/' + p
+  } else if (req.query && req.query['0']) {
     const subpath = req.query['0'].startsWith('/') ? req.query['0'] : '/' + req.query['0']
     req.url = '/api' + subpath
   } else if (req.headers['x-matched-path'] && req.headers['x-matched-path'].startsWith('/api')) {
