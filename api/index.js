@@ -1,4 +1,4 @@
-import express from 'express'
+﻿import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
@@ -16,6 +16,17 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Normalize Vercel rewritten URL
+app.use((req, res, next) => {
+  if (req.query && req.query['0']) {
+    const subpath = req.query['0'].startsWith('/') ? req.query['0'] : '/' + req.query['0']
+    req.url = '/api' + subpath
+  } else if (req.headers['x-matched-path'] && req.headers['x-matched-path'].startsWith('/api')) {
+    req.url = req.headers['x-matched-path']
+  }
+  next()
+})
 
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return
@@ -37,7 +48,7 @@ app.use(async (req, res, next) => {
   }
 })
 
-// Flexible route mounting (matches with or without /api prefix)
+// Flexible route mounting
 app.use(['/api/auth', '/auth'], authRoutes)
 app.use(['/api/complaints', '/complaints'], complaintRoutes)
 app.use(['/api/ai', '/ai'], aiRoutes)
@@ -49,7 +60,11 @@ app.get(['/api/health', '/health'], (req, res) => {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: 'API route not found' })
+  res.status(404).json({
+    error: 'API route not found',
+    requestedUrl: req.url,
+    originalUrl: req.originalUrl,
+  })
 })
 
 // Error handler
