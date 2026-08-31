@@ -1,4 +1,4 @@
-﻿import express from 'express'
+import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
@@ -36,7 +36,7 @@ const connectDB = async () => {
 
   const mongoUri =
     process.env.MONGODB_URI ||
-    'mongodb+srv://huyousfisoft_db_user:YKIiHFGHj0tDEE6r@cluster0.jmvgzzy.mongodb.net/citizen_portal?appName=Cluster0&retryWrites=true&w=majority'
+    'mongodb://huyousfi_db_user:oSWUJL1bsQFBULOb@ac-2vdhjbn-shard-00-00.bphjqsx.mongodb.net:27017,ac-2vdhjbn-shard-00-01.bphjqsx.mongodb.net:27017,ac-2vdhjbn-shard-00-02.bphjqsx.mongodb.net:27017/citizen_portal?ssl=true&replicaSet=atlas-u256pr-shard-0&authSource=admin&appName=Cluster0'
 
   await mongoose.connect(mongoUri)
 }
