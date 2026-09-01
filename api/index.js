@@ -17,23 +17,30 @@ dotenv.config({ path: rootEnvPath })
 
 const app = express()
 
-const corsOrigin = process.env.FRONTEND_URL || 'http://localhost:5173'
+const corsOrigin = process.env.FRONTEND_URL || ['http://localhost:5173', 'http://127.0.0.1:5173']
 console.log('CORS Origin:', corsOrigin)
 
 app.use(cors({
   origin: corsOrigin,
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Normalize Vercel rewritten URL and strip /api prefix
+// Request logging and debugging
 app.use((req, res, next) => {
-  // On Vercel, the request path might include /api prefix that needs to be stripped
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`)
+  next()
+})
+
+// Normalize paths - Vercel might send requests with or without /api prefix
+app.use((req, res, next) => {
+  // If URL starts with /api/, remove it (Vercel routes /api/X to this function as /X)
   if (req.url.startsWith('/api/')) {
-    req.url = req.url.slice(4) // Remove '/api' prefix
+    req.url = req.url.slice(4)
   }
-  
   next()
 })
 
@@ -55,15 +62,18 @@ app.use(async (req, res, next) => {
     await connectDB()
     next()
   } catch (err) {
-    console.error('Serverless database connection error:', err)
-    next(err)
+    console.error('❌ Database connection error:', err.message)
+    res.status(503).json({
+      error: 'Database connection failed',
+      message: err.message,
+    })
   }
 })
 
-// Flexible route mounting
-app.use(['/api/auth', '/auth'], authRoutes)
-app.use(['/api/complaints', '/complaints'], complaintRoutes)
-app.use(['/api/ai', '/ai'], aiRoutes)
+// Mount routes - on Vercel, requests come without /api prefix
+app.use('/auth', authRoutes)
+app.use('/complaints', complaintRoutes)
+app.use('/ai', aiRoutes)
 
 // Health check
 app.get(['/api/health', '/health'], (req, res) => {
@@ -72,10 +82,12 @@ app.get(['/api/health', '/health'], (req, res) => {
 
 // 404 handler
 app.use((req, res) => {
+  console.log(`[404] No route found for ${req.method} ${req.url}`)
+  console.log('Available routes: /auth, /complaints, /ai, /health')
   res.status(404).json({
     error: 'API route not found',
-    requestedUrl: req.url,
-    originalUrl: req.originalUrl,
+    message: `No handler for ${req.method} ${req.url}`,
+    availableRoutes: ['/auth', '/complaints', '/ai', '/health'],
   })
 })
 
