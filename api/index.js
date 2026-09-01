@@ -17,28 +17,21 @@ dotenv.config({ path: rootEnvPath })
 
 const app = express()
 
+const corsOrigin = process.env.FRONTEND_URL || 'http://localhost:5173'
+console.log('CORS Origin:', corsOrigin)
+
 app.use(cors({
-  origin: '*',
+  origin: corsOrigin,
   credentials: true,
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Normalize Vercel rewritten URL
+// Normalize Vercel rewritten URL and strip /api prefix
 app.use((req, res, next) => {
-  // Vercel sets x-matched-path header for rewrites
-  if (req.headers['x-matched-path']) {
-    req.url = req.headers['x-matched-path']
-  }
-  // Fallback: check for path in query parameters
-  else if (req.query && req.query.path) {
-    const p = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path
-    req.url = p.startsWith('/') ? p : '/' + p
-  }
-  // Fallback: check for catch-all parameter
-  else if (req.query && req.query['0']) {
-    const subpath = req.query['0'].startsWith('/') ? req.query['0'] : '/' + req.query['0']
-    req.url = '/api' + subpath
+  // On Vercel, the request path might include /api prefix that needs to be stripped
+  if (req.url.startsWith('/api/')) {
+    req.url = req.url.slice(4) // Remove '/api' prefix
   }
   
   next()
