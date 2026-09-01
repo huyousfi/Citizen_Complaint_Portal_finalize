@@ -2,11 +2,18 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import authRoutes from '../backend/routes/auth.js'
 import complaintRoutes from '../backend/routes/complaints.js'
 import aiRoutes from '../backend/routes/ai.js'
 
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const rootEnvPath = path.resolve(__dirname, '../.env')
+
+// Load environment variables from root .env file
+dotenv.config({ path: rootEnvPath })
 
 const app = express()
 
@@ -19,24 +26,33 @@ app.use(express.urlencoded({ extended: true }))
 
 // Normalize Vercel rewritten URL
 app.use((req, res, next) => {
-  if (req.query && req.query.path) {
-    const p = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path
-    req.url = p.startsWith('/') ? '/api' + p : '/api/' + p
-  } else if (req.query && req.query['0']) {
-    const subpath = req.query['0'].startsWith('/') ? req.query['0'] : '/' + req.query['0']
-    req.url = '/api' + subpath
-  } else if (req.headers['x-matched-path'] && req.headers['x-matched-path'].startsWith('/api')) {
+  // Vercel sets x-matched-path header for rewrites
+  if (req.headers['x-matched-path']) {
     req.url = req.headers['x-matched-path']
   }
+  // Fallback: check for path in query parameters
+  else if (req.query && req.query.path) {
+    const p = Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path
+    req.url = p.startsWith('/') ? p : '/' + p
+  }
+  // Fallback: check for catch-all parameter
+  else if (req.query && req.query['0']) {
+    const subpath = req.query['0'].startsWith('/') ? req.query['0'] : '/' + req.query['0']
+    req.url = '/api' + subpath
+  }
+  
   next()
 })
 
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return
 
-  const mongoUri =
-    process.env.MONGODB_URI ||
-    'mongodb+srv://huyousfisoft_db_user:YKIiHFGHj0tDEE6r@cluster0.jmvgzzy.mongodb.net/citizen_portal?appName=Cluster0&retryWrites=true&w=majority'
+  const mongoUri = process.env.MONGODB_URI
+
+  if (!mongoUri) {
+    console.error('❌ MONGODB_URI is not set in environment variables')
+    throw new Error('MongoDB connection string not configured')
+  }
 
   await mongoose.connect(mongoUri)
 }
